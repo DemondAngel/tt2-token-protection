@@ -1,0 +1,9 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+      "uuid_card": { "type": "string" },
+      "uuid_nfcreader": { "type": "string" } 
+    },
+    "required": ["uuid_card", "uuid_nfcreader"]
+}

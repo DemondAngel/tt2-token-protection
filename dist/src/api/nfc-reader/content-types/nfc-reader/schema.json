@@ -1,0 +1,42 @@
+{
+    "kind": "collectionType",
+    "collectionName": "nfc_readers",
+    "info": {
+        "singularName": "nfc-reader",
+        "pluralName": "nfc-readers",
+        "displayName": "nfc_reader",
+        "description": ""
+    },
+    "options": {
+        "draftAndPublish": true
+    },
+    "attributes": {
+        "uuid_nfc": {
+            "type": "uid"
+        },
+        "user": {
+            "type": "string"
+        },
+        "pass": {
+            "type": "password"
+        },
+        "public_key": {
+            "type": "string"
+        },
+        "private_key": {
+            "type": "string"
+        },
+        "transactions": {
+            "type": "relation",
+            "relation": "oneToMany",
+            "target": "api::transaction.transaction",
+            "mappedBy": "nfc_reader"
+        },
+        "cards": {
+            "type": "relation",
+            "relation": "oneToMany",
+            "target": "api::card.card",
+            "mappedBy": "nfc_reader"
+        }
+    }
+}

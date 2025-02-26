@@ -1,0 +1,11 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+        "uuid_card": { "type": "string" },
+        "uuid_public_key": { "type": "string" },
+        "uuid_nfcreader": { "type": "string" },
+        "jwt_card": { "type": "string" }
+    },
+    "required": ["uuid_card", "uuid_public_key", "uuid_nfcreader", "jwt_card"]
+}
