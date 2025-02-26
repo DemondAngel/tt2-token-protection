@@ -1,0 +1,36 @@
+{
+    "kind": "collectionType",
+    "collectionName": "transactions",
+    "info": {
+        "singularName": "transaction",
+        "pluralName": "transactions",
+        "displayName": "transaction",
+        "description": ""
+    },
+    "options": {
+        "draftAndPublish": true
+    },
+    "attributes": {
+        "uuid": {
+            "type": "uid"
+        },
+        "date_time": {
+            "type": "datetime"
+        },
+        "token": {
+            "type": "string"
+        },
+        "nfc_reader": {
+            "type": "relation",
+            "relation": "manyToOne",
+            "target": "api::nfc-reader.nfc-reader",
+            "inversedBy": "transactions"
+        },
+        "cards": {
+            "type": "relation",
+            "relation": "oneToMany",
+            "target": "api::card.card",
+            "mappedBy": "transaction"
+        }
+    }
+}

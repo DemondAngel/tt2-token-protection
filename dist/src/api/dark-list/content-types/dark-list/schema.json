@@ -1,0 +1,28 @@
+{
+    "kind": "collectionType",
+    "collectionName": "dark_lists",
+    "info": {
+        "singularName": "dark-list",
+        "pluralName": "dark-lists",
+        "displayName": "dark_list",
+        "description": ""
+    },
+    "options": {
+        "draftAndPublish": true
+    },
+    "attributes": {
+        "date_time": {
+            "type": "datetime"
+        },
+        "card": {
+            "type": "relation",
+            "relation": "oneToOne",
+            "target": "api::card.card"
+        },
+        "transaction": {
+            "type": "relation",
+            "relation": "oneToOne",
+            "target": "api::transaction.transaction"
+        }
+    }
+}

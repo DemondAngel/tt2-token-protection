@@ -1,0 +1,26 @@
+{
+    "kind": "collectionType",
+    "collectionName": "pair_keys",
+    "info": {
+        "singularName": "pair-key",
+        "pluralName": "pair-keys",
+        "displayName": "pair_key"
+    },
+    "options": {
+        "draftAndPublish": true
+    },
+    "attributes": {
+        "nfc_reader": {
+            "type": "relation",
+            "relation": "oneToOne",
+            "target": "api::nfc-reader.nfc-reader"
+        },
+        "type_use": {
+            "type": "enumeration",
+            "enum": [
+                "NFC_READER",
+                "SYSTEM"
+            ]
+        }
+    }
+}
