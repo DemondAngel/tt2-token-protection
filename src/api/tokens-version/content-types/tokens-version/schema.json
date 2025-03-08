@@ -1,0 +1,29 @@
+{
+  "kind": "collectionType",
+  "collectionName": "tokens_versions",
+  "info": {
+    "singularName": "tokens-version",
+    "pluralName": "tokens-versions",
+    "displayName": "tokens_version",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "uuid": {
+      "type": "uid"
+    },
+    "version": {
+      "type": "integer"
+    },
+    "valid_to": {
+      "type": "datetime"
+    },
+    "pair_key": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::pair-key.pair-key"
+    }
+  }
+}
