@@ -378,7 +378,7 @@ export interface ApiCardCard extends Struct.CollectionTypeSchema {
     singularName: 'card';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     createdAt: Schema.Attribute.DateTime;
@@ -393,8 +393,8 @@ export interface ApiCardCard extends Struct.CollectionTypeSchema {
       'api::nfc-reader.nfc-reader'
     >;
     publishedAt: Schema.Attribute.DateTime;
-    transaction: Schema.Attribute.Relation<
-      'manyToOne',
+    transactions: Schema.Attribute.Relation<
+      'oneToMany',
       'api::transaction.transaction'
     >;
     updatedAt: Schema.Attribute.DateTime;
@@ -413,7 +413,7 @@ export interface ApiDarkListDarkList extends Struct.CollectionTypeSchema {
     singularName: 'dark-list';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     card: Schema.Attribute.Relation<'oneToOne', 'api::card.card'>;
@@ -447,7 +447,7 @@ export interface ApiNfcReaderNfcReader extends Struct.CollectionTypeSchema {
     singularName: 'nfc-reader';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     cards: Schema.Attribute.Relation<'oneToMany', 'api::card.card'>;
@@ -460,9 +460,8 @@ export interface ApiNfcReaderNfcReader extends Struct.CollectionTypeSchema {
       'api::nfc-reader.nfc-reader'
     > &
       Schema.Attribute.Private;
-    pass: Schema.Attribute.Password;
-    private_key: Schema.Attribute.String;
-    public_key: Schema.Attribute.String;
+    pair_key: Schema.Attribute.Relation<'oneToOne', 'api::pair-key.pair-key'>;
+    pass: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     transactions: Schema.Attribute.Relation<
       'oneToMany',
@@ -479,12 +478,13 @@ export interface ApiNfcReaderNfcReader extends Struct.CollectionTypeSchema {
 export interface ApiPairKeyPairKey extends Struct.CollectionTypeSchema {
   collectionName: 'pair_keys';
   info: {
+    description: '';
     displayName: 'pair_key';
     pluralName: 'pair-keys';
     singularName: 'pair-key';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     createdAt: Schema.Attribute.DateTime;
@@ -496,15 +496,47 @@ export interface ApiPairKeyPairKey extends Struct.CollectionTypeSchema {
       'api::pair-key.pair-key'
     > &
       Schema.Attribute.Private;
-    nfc_reader: Schema.Attribute.Relation<
-      'oneToOne',
-      'api::nfc-reader.nfc-reader'
-    >;
+    private_key: Schema.Attribute.Text;
+    public_key: Schema.Attribute.Text;
     publishedAt: Schema.Attribute.DateTime;
-    type_use: Schema.Attribute.Enumeration<['NFC_READER', 'SYSTEM']>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    uuid: Schema.Attribute.UID;
+    valid_to: Schema.Attribute.DateTime;
+  };
+}
+
+export interface ApiTokensVersionTokensVersion
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'tokens_versions';
+  info: {
+    description: '';
+    displayName: 'tokens_version';
+    pluralName: 'tokens-versions';
+    singularName: 'tokens-version';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::tokens-version.tokens-version'
+    > &
+      Schema.Attribute.Private;
+    pair_key: Schema.Attribute.Relation<'oneToOne', 'api::pair-key.pair-key'>;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    uuid: Schema.Attribute.UID;
+    valid_to: Schema.Attribute.DateTime;
+    version: Schema.Attribute.Integer;
   };
 }
 
@@ -517,14 +549,14 @@ export interface ApiTransactionTransaction extends Struct.CollectionTypeSchema {
     singularName: 'transaction';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
-    cards: Schema.Attribute.Relation<'oneToMany', 'api::card.card'>;
+    action: Schema.Attribute.Enumeration<['CREATED', 'USED']>;
+    card: Schema.Attribute.Relation<'manyToOne', 'api::card.card'>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    date_time: Schema.Attribute.DateTime;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -1057,6 +1089,7 @@ declare module '@strapi/strapi' {
       'api::dark-list.dark-list': ApiDarkListDarkList;
       'api::nfc-reader.nfc-reader': ApiNfcReaderNfcReader;
       'api::pair-key.pair-key': ApiPairKeyPairKey;
+      'api::tokens-version.tokens-version': ApiTokensVersionTokensVersion;
       'api::transaction.transaction': ApiTransactionTransaction;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;

@@ -8,14 +8,11 @@
         "description": ""
     },
     "options": {
-        "draftAndPublish": true
+        "draftAndPublish": false
     },
     "attributes": {
         "uuid": {
             "type": "uid"
-        },
-        "date_time": {
-            "type": "datetime"
         },
         "token": {
             "type": "string"
@@ -26,11 +23,18 @@
             "target": "api::nfc-reader.nfc-reader",
             "inversedBy": "transactions"
         },
-        "cards": {
+        "card": {
             "type": "relation",
-            "relation": "oneToMany",
+            "relation": "manyToOne",
             "target": "api::card.card",
-            "mappedBy": "transaction"
+            "inversedBy": "transactions"
+        },
+        "action": {
+            "type": "enumeration",
+            "enum": [
+                "CREATED",
+                "USED"
+            ]
         }
     }
 }

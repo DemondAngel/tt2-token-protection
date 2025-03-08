@@ -19,10 +19,14 @@ export default factories.createCoreController('api::nfc-reader.nfc-reader', ({st
             return ctx.badRequest('Validation Error', {errors: validate.errors});
         }
 
+        let body = ctx.request.body;
         try{
-            ctx.body = 'ok';
+            let responseService = await strapi.service('api::nfc-reader.nfc-reader').authNFCReader(body.username, body.pass);
+            console.log(responseService);
+            return responseService;
         }
         catch(err){
+            console.log(`There was an error ${err}`);
             ctx.body = err;
         }
     }

@@ -8,22 +8,13 @@
     "description": ""
   },
   "options": {
-    "draftAndPublish": true
+    "draftAndPublish": false
   },
   "attributes": {
     "uuid_nfc": {
       "type": "uid"
     },
     "user": {
-      "type": "string"
-    },
-    "pass": {
-      "type": "password"
-    },
-    "public_key": {
-      "type": "string"
-    },
-    "private_key": {
       "type": "string"
     },
     "transactions": {
@@ -37,6 +28,14 @@
       "relation": "oneToMany",
       "target": "api::card.card",
       "mappedBy": "nfc_reader"
+    },
+    "pair_key": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::pair-key.pair-key"
+    },
+    "pass": {
+      "type": "string"
     }
   }
 }

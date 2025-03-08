@@ -3,9 +3,8 @@
     "type": "object",
     "properties": {
         "uuid_card": { "type": "string" },
-        "uuid_public_key": { "type": "string" },
-        "uuid_nfcreader": { "type": "string" },
+        "uuid_tokens_version": { "type": "string" },
         "jwt_card": { "type": "string" }
     },
-    "required": ["uuid_card", "uuid_public_key", "uuid_nfcreader", "jwt_card"]
+    "required": ["uuid_card", "jwt_card", "uuid_tokens_version"]
 }

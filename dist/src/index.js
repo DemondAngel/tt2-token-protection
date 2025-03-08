@@ -1,5 +1,5 @@
 "use strict";
-// import type { Core } from '@strapi/strapi';
+//import type { Core } from '@strapi/strapi';
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = {
     /**
@@ -8,7 +8,7 @@ exports.default = {
      *
      * This gives you an opportunity to extend code.
      */
-    register( /* { strapi }: { strapi: Core.Strapi } */) { },
+    register( /**/) { },
     /**
      * An asynchronous bootstrap function that runs before
      * your application gets started.
