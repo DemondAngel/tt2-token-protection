@@ -35,15 +35,11 @@ exports.default = strapi_1.factories.createCoreService('api::pair-key.pair-key',
                         },
                     });
                     if (entry !== null) {
-                        response = {
-                            'id': entry.id,
-                            "uuid": uuid,
-                            "privateKey": privateKey,
-                            "publicKey": publicKey
-                        };
+                        response = entry;
+                        break;
                     }
                 }
-            } while (entry === null);
+            } while (entry !== null);
         }
         catch (error) {
             console.error(error);
@@ -61,29 +57,29 @@ exports.default = strapi_1.factories.createCoreService('api::pair-key.pair-key',
                 }
             }
         });
-        if (entry !== null && entry !== '') {
+        if (entry !== null && entry !== undefined) {
             const today = new Date();
             const validToDate = new Date(entry['valid_to']);
             if (today >= validToDate) {
-                let responseGenerateKeys = await strapi.service('api::pair-key.pair-key').generateKeys();
-                console.log(`Id Generado ${responseGenerateKeys['id']}`);
+                let responseGenerateKeys = await this.generateKeys();
+                console.log(`Id Generado ${responseGenerateKeys.id}`);
                 return {
                     renovated: true,
                     keys: {
-                        'id': responseGenerateKeys['id'],
-                        'uuid': responseGenerateKeys['uuid'],
-                        "privateKey": responseGenerateKeys['privateKey'],
-                        "publicKey": responseGenerateKeys['publicKey'],
+                        'id': responseGenerateKeys.id,
+                        'uuid': responseGenerateKeys.uuid,
+                        "privateKey": responseGenerateKeys.private_key,
+                        "publicKey": responseGenerateKeys.public_key,
                     }
                 };
             }
             return {
                 renovated: false,
                 keys: {
-                    'id': entry['id'],
-                    'uuid': entry['uuid'],
-                    "privateKey": entry['private_key'],
-                    "publicKey": entry['public_key'],
+                    'id': entry.id,
+                    'uuid': entry.uuid,
+                    "privateKey": entry.private_key,
+                    "publicKey": entry.public_key,
                 }
             };
         }

@@ -11,10 +11,7 @@
         "draftAndPublish": false
     },
     "attributes": {
-        "uuid_nfc": {
-            "type": "uid"
-        },
-        "user": {
+        "user_name": {
             "type": "string"
         },
         "transactions": {
@@ -29,13 +26,19 @@
             "target": "api::card.card",
             "mappedBy": "nfc_reader"
         },
-        "pair_key": {
-            "type": "relation",
-            "relation": "oneToOne",
-            "target": "api::pair-key.pair-key"
-        },
         "pass": {
             "type": "string"
+        },
+        "uuid": {
+            "type": "uid",
+            "maxLength": 16,
+            "required": true,
+            "minLength": 1
+        },
+        "shared_key": {
+            "type": "relation",
+            "relation": "oneToOne",
+            "target": "api::shared-key.shared-key"
         }
     }
 }

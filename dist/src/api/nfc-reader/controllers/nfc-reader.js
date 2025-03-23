@@ -19,7 +19,7 @@ exports.default = strapi_1.factories.createCoreController('api::nfc-reader.nfc-r
         }
         let body = ctx.request.body;
         try {
-            let responseService = await strapi.service('api::nfc-reader.nfc-reader').authNFCReader(body.username, body.pass);
+            let responseService = await strapi.service('api::nfc-reader.nfc-reader').authNFCReader(body.userName, body.pass);
             console.log(responseService);
             return responseService;
         }

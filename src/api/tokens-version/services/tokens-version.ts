@@ -4,15 +4,17 @@
 
 import { factories } from '@strapi/strapi';
 import { v4 as uuidv4 } from 'uuid';
+import { createHash } from 'crypto';
 
 export default factories.createCoreService('api::tokens-version.tokens-version', ({strapi}) => ({
-    async createVersion(lastVersion:number, id_pair_key: number) {
+    async createVersion(lastVersion:number, pairKeyId: number) {
 
         try{
             let entry = null;
 
             do{
-                const uuid = uuidv4();
+                const bigUuid = uuidv4();
+                    const uuid = createHash('sha256').update(bigUuid).digest('hex').substring(0, 16);
                 
                 const querying = await strapi.db.query('api::tokens-version.tokens-version').findOne({
                     where: {
@@ -26,7 +28,7 @@ export default factories.createCoreService('api::tokens-version.tokens-version',
                         data:{
                             uuid: uuid,
                             version: lastVersion + 1,
-                            pair_key: id_pair_key,
+                            pair_key: pairKeyId,
                             valid_to: new Date(new Date().setMonth(new Date().getMonth() + 3)).toISOString()
                         }
                     });
@@ -36,7 +38,7 @@ export default factories.createCoreService('api::tokens-version.tokens-version',
                         tokensVersion: {
                             uuid: entry.uuid,
                             version: entry.version,
-                            pairKey: id_pair_key,
+                            pairKey: pairKeyId,
                             valid_to: entry.valid_to
                         }
                     };
@@ -73,8 +75,8 @@ export default factories.createCoreService('api::tokens-version.tokens-version',
                     status: 200,
                     tokensVersion: {
                         ...tokensVersion.tokensVersion,
-                        publicKey: pairGenerated.publicKey,
-                        privateKey: pairGenerated.privateKey,
+                        publicKey: pairGenerated.public_key,
+                        privateKey: pairGenerated.private_key,
                         uuidKey: pairGenerated.uuid
                     }
                 };
@@ -139,7 +141,7 @@ export default factories.createCoreService('api::tokens-version.tokens-version',
         }
     },
 
-    async retrievePublicKey(uuid_tokens_version: string){
+    async retrievePublicKey(tokensVersionUuid: string){
 
         let response = null;
 
@@ -147,7 +149,7 @@ export default factories.createCoreService('api::tokens-version.tokens-version',
             
             const entry = await strapi.db.query("api::tokens-version.tokens-version").findOne({
                 where: {
-                    uuid: uuid_tokens_version
+                    uuid: tokensVersionUuid
                 },
                 populate: {
                     pair_key: true

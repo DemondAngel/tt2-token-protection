@@ -384,7 +384,6 @@ export interface ApiCardCard extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    data: Schema.Attribute.JSON;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::card.card'> &
       Schema.Attribute.Private;
@@ -400,7 +399,7 @@ export interface ApiCardCard extends Struct.CollectionTypeSchema {
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    uuid_card: Schema.Attribute.UID;
+    uuid: Schema.Attribute.UID & Schema.Attribute.Required;
   };
 }
 
@@ -460,9 +459,12 @@ export interface ApiNfcReaderNfcReader extends Struct.CollectionTypeSchema {
       'api::nfc-reader.nfc-reader'
     > &
       Schema.Attribute.Private;
-    pair_key: Schema.Attribute.Relation<'oneToOne', 'api::pair-key.pair-key'>;
     pass: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
+    shared_key: Schema.Attribute.Relation<
+      'oneToOne',
+      'api::shared-key.shared-key'
+    >;
     transactions: Schema.Attribute.Relation<
       'oneToMany',
       'api::transaction.transaction'
@@ -470,8 +472,13 @@ export interface ApiNfcReaderNfcReader extends Struct.CollectionTypeSchema {
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    user: Schema.Attribute.String;
-    uuid_nfc: Schema.Attribute.UID;
+    user_name: Schema.Attribute.String;
+    uuid: Schema.Attribute.UID &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 16;
+        minLength: 1;
+      }>;
   };
 }
 
@@ -504,6 +511,38 @@ export interface ApiPairKeyPairKey extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     uuid: Schema.Attribute.UID;
     valid_to: Schema.Attribute.DateTime;
+  };
+}
+
+export interface ApiSharedKeySharedKey extends Struct.CollectionTypeSchema {
+  collectionName: 'shared_keys';
+  info: {
+    description: '';
+    displayName: 'shared_key';
+    pluralName: 'shared-keys';
+    singularName: 'shared-key';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::shared-key.shared-key'
+    > &
+      Schema.Attribute.Private;
+    pair_key: Schema.Attribute.Relation<'oneToOne', 'api::pair-key.pair-key'>;
+    publishedAt: Schema.Attribute.DateTime;
+    shared_key: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    uuid: Schema.Attribute.UID & Schema.Attribute.Required;
+    valid_to: Schema.Attribute.DateTime & Schema.Attribute.Required;
   };
 }
 
@@ -1089,6 +1128,7 @@ declare module '@strapi/strapi' {
       'api::dark-list.dark-list': ApiDarkListDarkList;
       'api::nfc-reader.nfc-reader': ApiNfcReaderNfcReader;
       'api::pair-key.pair-key': ApiPairKeyPairKey;
+      'api::shared-key.shared-key': ApiSharedKeySharedKey;
       'api::tokens-version.tokens-version': ApiTokensVersionTokensVersion;
       'api::transaction.transaction': ApiTransactionTransaction;
       'plugin::content-releases.release': PluginContentReleasesRelease;

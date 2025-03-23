@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { generateKeyPairSync } from "crypto";
 
 export default factories.createCoreService('api::pair-key.pair-key', ({strapi}) => ({
-    async generateKeys() {
+    async generateKeys(): Promise<PairKey | null | undefined | any> {
         console.log("generateKeys");
 
         const { privateKey, publicKey } = generateKeyPairSync("ec", {
@@ -16,9 +16,10 @@ export default factories.createCoreService('api::pair-key.pair-key', ({strapi}) 
             privateKeyEncoding: { type: "pkcs8", format: "pem"}
         });
 
-        let response = null;
+        let response: PairKey | null | undefined | any = null;
+
         try{
-            let entry = null;
+            let entry: PairKey | null | undefined = null;
             do{
                 console.log("comienza consulta");
                 const uuid = uuidv4();
@@ -39,17 +40,13 @@ export default factories.createCoreService('api::pair-key.pair-key', ({strapi}) 
                       });
 
                     if(entry !== null) {
-                        response = {
-                            'id': entry.id,
-                            "uuid": uuid,
-                            "privateKey": privateKey,
-                            "publicKey": publicKey
-                        };
+                        response = entry;
+                        break;
                     }  
                 }
 
             }
-            while(entry === null);
+            while(entry !== null);
             
         }
         catch(error){
@@ -63,7 +60,7 @@ export default factories.createCoreService('api::pair-key.pair-key', ({strapi}) 
     async renovateKeys(public_key: string){
         console.log("Public key");
         console.log(public_key);
-        const entry = await strapi.db.query('api::pair-key.pair-key').findOne({
+        const entry: PairKey | null | undefined = await strapi.db.query('api::pair-key.pair-key').findOne({
             where: {
                 public_key: {
                     $eq: public_key,
@@ -71,22 +68,22 @@ export default factories.createCoreService('api::pair-key.pair-key', ({strapi}) 
             }
         });
 
-        if(entry !== null && entry !== '' ){
+        if(entry !== null && entry !== undefined ){
             const today = new Date();
             const validToDate = new Date(entry['valid_to']);
 
             if(today >= validToDate){
-                let responseGenerateKeys= await strapi.service('api::pair-key.pair-key').generateKeys();
+                let responseGenerateKeys: PairKey | null | undefined | any = await this.generateKeys();
                 
-                console.log(`Id Generado ${responseGenerateKeys['id']}`);
+                console.log(`Id Generado ${responseGenerateKeys.id}`);
 
                 return {
                     renovated: true,
                     keys: {
-                        'id': responseGenerateKeys['id'],
-                        'uuid': responseGenerateKeys['uuid'],
-                        "privateKey": responseGenerateKeys['privateKey'],
-                        "publicKey": responseGenerateKeys['publicKey'],
+                        'id': responseGenerateKeys.id,
+                        'uuid': responseGenerateKeys.uuid,
+                        "privateKey": responseGenerateKeys.private_key,
+                        "publicKey": responseGenerateKeys.public_key,
                     }
                 };
             }
@@ -94,10 +91,10 @@ export default factories.createCoreService('api::pair-key.pair-key', ({strapi}) 
             return {
                 renovated: false,
                 keys: {
-                    'id': entry['id'],
-                    'uuid': entry['uuid'],
-                    "privateKey": entry['private_key'],
-                    "publicKey": entry['public_key'],
+                    'id': entry.id,
+                    'uuid': entry.uuid,
+                    "privateKey": entry.private_key,
+                    "publicKey": entry.public_key,
                 }
             }
         }

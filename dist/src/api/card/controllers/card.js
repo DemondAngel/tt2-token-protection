@@ -22,9 +22,9 @@ exports.default = strapi_1.factories.createCoreController('api::card.card', ({ s
             return ctx.badRequest('Validation Error', { errors: validateCreate.errors });
         }
         let body = ctx.request.body;
-        const uuid_nfc = body.uuid_nfc;
+        const nfcUuid = body.nfcUuid;
         try {
-            let responseCreateService = await strapi.service('api::card.card').createCard(uuid_nfc);
+            let responseCreateService = await strapi.service('api::card.card').createCard(nfcUuid);
             if (responseCreateService.status === 200) {
                 return responseCreateService;
             }
@@ -48,10 +48,10 @@ exports.default = strapi_1.factories.createCoreController('api::card.card', ({ s
             return ctx.badRequest('Validation Error', { errors: validateGenerate.errors });
         }
         let body = ctx.request.body;
-        const uuid_nfc = body.uuid_nfc;
-        const uuid_card = body.uuid_card;
+        const nfcUuid = body.nfcUuid;
+        const cardUuid = body.cardUuid;
         try {
-            let responseCreateService = await strapi.service('api::card.card').generateToken(uuid_nfc, uuid_card);
+            let responseCreateService = await strapi.service('api::card.card').generateToken(nfcUuid, cardUuid);
             if (responseCreateService.status === 200) {
                 console.log(responseCreateService);
                 return responseCreateService;

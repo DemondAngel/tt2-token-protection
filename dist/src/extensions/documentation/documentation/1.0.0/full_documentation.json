@@ -14,7 +14,7 @@
             "name": "Apache 2.0",
             "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
         },
-        "x-generation-date": "2025-03-08T04:38:00.701Z"
+        "x-generation-date": "2025-03-23T07:09:27.160Z"
     },
     "x-strapi-config": {
         "plugins": [
@@ -2060,6 +2060,512 @@
                     }
                 ],
                 "operationId": "delete/pair-keys/{id}"
+            }
+        },
+        "/shared-keys": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SharedKeyListResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Shared-key"
+                ],
+                "parameters": [
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "Sort by attributes ascending (asc) or descending (desc)",
+                        "deprecated": false,
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "pagination[withCount]",
+                        "in": "query",
+                        "description": "Return page/pageSize (default: true)",
+                        "deprecated": false,
+                        "required": false,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    },
+                    {
+                        "name": "pagination[page]",
+                        "in": "query",
+                        "description": "Page number (default: 0)",
+                        "deprecated": false,
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "pagination[pageSize]",
+                        "in": "query",
+                        "description": "Page size (default: 25)",
+                        "deprecated": false,
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "pagination[start]",
+                        "in": "query",
+                        "description": "Offset value (default: 0)",
+                        "deprecated": false,
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "pagination[limit]",
+                        "in": "query",
+                        "description": "Number of entities to return (default: 25)",
+                        "deprecated": false,
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "fields",
+                        "in": "query",
+                        "description": "Fields to return (ex: title,author)",
+                        "deprecated": false,
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "populate",
+                        "in": "query",
+                        "description": "Relations to return",
+                        "deprecated": false,
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters",
+                        "in": "query",
+                        "description": "Filters to apply",
+                        "deprecated": false,
+                        "required": false,
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        },
+                        "style": "deepObject"
+                    },
+                    {
+                        "name": "locale",
+                        "in": "query",
+                        "description": "Locale to apply",
+                        "deprecated": false,
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "operationId": "get/shared-keys"
+            },
+            "post": {
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SharedKeyResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Shared-key"
+                ],
+                "parameters": [],
+                "operationId": "post/shared-keys",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SharedKeyRequest"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/shared-keys/{id}": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SharedKeyResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Shared-key"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "",
+                        "deprecated": false,
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "operationId": "get/shared-keys/{id}"
+            },
+            "put": {
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SharedKeyResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Shared-key"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "",
+                        "deprecated": false,
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "operationId": "put/shared-keys/{id}",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SharedKeyRequest"
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "integer",
+                                    "format": "int64"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Shared-key"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "",
+                        "deprecated": false,
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "operationId": "delete/shared-keys/{id}"
             }
         },
         "/tokens-versions": {
@@ -4533,12 +5039,11 @@
                 ],
                 "properties": {
                     "data": {
+                        "required": [
+                            "uuid"
+                        ],
                         "type": "object",
                         "properties": {
-                            "uuid_card": {
-                                "type": "string"
-                            },
-                            "data": {},
                             "nfc_reader": {
                                 "oneOf": [
                                     {
@@ -4563,6 +5068,9 @@
                                     ],
                                     "example": "string or id"
                                 }
+                            },
+                            "uuid": {
+                                "type": "string"
                             },
                             "locale": {
                                 "type": "string"
@@ -4622,6 +5130,9 @@
             },
             "Card": {
                 "type": "object",
+                "required": [
+                    "uuid"
+                ],
                 "properties": {
                     "id": {
                         "type": "number"
@@ -4629,10 +5140,6 @@
                     "documentId": {
                         "type": "string"
                     },
-                    "uuid_card": {
-                        "type": "string"
-                    },
-                    "data": {},
                     "nfc_reader": {
                         "type": "object",
                         "properties": {
@@ -4642,10 +5149,7 @@
                             "documentId": {
                                 "type": "string"
                             },
-                            "uuid_nfc": {
-                                "type": "string"
-                            },
-                            "user": {
+                            "user_name": {
                                 "type": "string"
                             },
                             "transactions": {
@@ -4685,10 +5189,6 @@
                                                 "documentId": {
                                                     "type": "string"
                                                 },
-                                                "uuid_card": {
-                                                    "type": "string"
-                                                },
-                                                "data": {},
                                                 "nfc_reader": {
                                                     "type": "object",
                                                     "properties": {
@@ -4713,6 +5213,9 @@
                                                             }
                                                         }
                                                     }
+                                                },
+                                                "uuid": {
+                                                    "type": "string"
                                                 },
                                                 "createdAt": {
                                                     "type": "string",
@@ -5094,7 +5597,13 @@
                                     }
                                 }
                             },
-                            "pair_key": {
+                            "pass": {
+                                "type": "string"
+                            },
+                            "uuid": {
+                                "type": "string"
+                            },
+                            "shared_key": {
                                 "type": "object",
                                 "properties": {
                                     "id": {
@@ -5106,15 +5615,87 @@
                                     "uuid": {
                                         "type": "string"
                                     },
-                                    "public_key": {
-                                        "type": "string"
-                                    },
-                                    "private_key": {
-                                        "type": "string"
+                                    "pair_key": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "number"
+                                            },
+                                            "documentId": {
+                                                "type": "string"
+                                            },
+                                            "uuid": {
+                                                "type": "string"
+                                            },
+                                            "public_key": {
+                                                "type": "string"
+                                            },
+                                            "private_key": {
+                                                "type": "string"
+                                            },
+                                            "valid_to": {
+                                                "type": "string",
+                                                "format": "date-time"
+                                            },
+                                            "createdAt": {
+                                                "type": "string",
+                                                "format": "date-time"
+                                            },
+                                            "updatedAt": {
+                                                "type": "string",
+                                                "format": "date-time"
+                                            },
+                                            "publishedAt": {
+                                                "type": "string",
+                                                "format": "date-time"
+                                            },
+                                            "createdBy": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "number"
+                                                    },
+                                                    "documentId": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            },
+                                            "updatedBy": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "number"
+                                                    },
+                                                    "documentId": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            },
+                                            "locale": {
+                                                "type": "string"
+                                            },
+                                            "localizations": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "number"
+                                                        },
+                                                        "documentId": {
+                                                            "type": "string"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
                                     },
                                     "valid_to": {
                                         "type": "string",
                                         "format": "date-time"
+                                    },
+                                    "shared_key": {
+                                        "type": "string"
                                     },
                                     "createdAt": {
                                         "type": "string",
@@ -5168,9 +5749,6 @@
                                         }
                                     }
                                 }
-                            },
-                            "pass": {
-                                "type": "string"
                             },
                             "createdAt": {
                                 "type": "string",
@@ -5238,6 +5816,9 @@
                                 }
                             }
                         }
+                    },
+                    "uuid": {
+                        "type": "string"
                     },
                     "createdAt": {
                         "type": "string",
@@ -5416,10 +5997,6 @@
                             "documentId": {
                                 "type": "string"
                             },
-                            "uuid_card": {
-                                "type": "string"
-                            },
-                            "data": {},
                             "nfc_reader": {
                                 "type": "object",
                                 "properties": {
@@ -5429,10 +6006,7 @@
                                     "documentId": {
                                         "type": "string"
                                     },
-                                    "uuid_nfc": {
-                                        "type": "string"
-                                    },
-                                    "user": {
+                                    "user_name": {
                                         "type": "string"
                                     },
                                     "transactions": {
@@ -5801,7 +6375,13 @@
                                             }
                                         }
                                     },
-                                    "pair_key": {
+                                    "pass": {
+                                        "type": "string"
+                                    },
+                                    "uuid": {
+                                        "type": "string"
+                                    },
+                                    "shared_key": {
                                         "type": "object",
                                         "properties": {
                                             "id": {
@@ -5813,15 +6393,87 @@
                                             "uuid": {
                                                 "type": "string"
                                             },
-                                            "public_key": {
-                                                "type": "string"
-                                            },
-                                            "private_key": {
-                                                "type": "string"
+                                            "pair_key": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "number"
+                                                    },
+                                                    "documentId": {
+                                                        "type": "string"
+                                                    },
+                                                    "uuid": {
+                                                        "type": "string"
+                                                    },
+                                                    "public_key": {
+                                                        "type": "string"
+                                                    },
+                                                    "private_key": {
+                                                        "type": "string"
+                                                    },
+                                                    "valid_to": {
+                                                        "type": "string",
+                                                        "format": "date-time"
+                                                    },
+                                                    "createdAt": {
+                                                        "type": "string",
+                                                        "format": "date-time"
+                                                    },
+                                                    "updatedAt": {
+                                                        "type": "string",
+                                                        "format": "date-time"
+                                                    },
+                                                    "publishedAt": {
+                                                        "type": "string",
+                                                        "format": "date-time"
+                                                    },
+                                                    "createdBy": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "number"
+                                                            },
+                                                            "documentId": {
+                                                                "type": "string"
+                                                            }
+                                                        }
+                                                    },
+                                                    "updatedBy": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "number"
+                                                            },
+                                                            "documentId": {
+                                                                "type": "string"
+                                                            }
+                                                        }
+                                                    },
+                                                    "locale": {
+                                                        "type": "string"
+                                                    },
+                                                    "localizations": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "type": "object",
+                                                            "properties": {
+                                                                "id": {
+                                                                    "type": "number"
+                                                                },
+                                                                "documentId": {
+                                                                    "type": "string"
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
                                             },
                                             "valid_to": {
                                                 "type": "string",
                                                 "format": "date-time"
+                                            },
+                                            "shared_key": {
+                                                "type": "string"
                                             },
                                             "createdAt": {
                                                 "type": "string",
@@ -5875,9 +6527,6 @@
                                                 }
                                             }
                                         }
-                                    },
-                                    "pass": {
-                                        "type": "string"
                                     },
                                     "createdAt": {
                                         "type": "string",
@@ -5945,6 +6594,9 @@
                                         }
                                     }
                                 }
+                            },
+                            "uuid": {
+                                "type": "string"
                             },
                             "createdAt": {
                                 "type": "string",
@@ -6158,12 +6810,12 @@
                 ],
                 "properties": {
                     "data": {
+                        "required": [
+                            "uuid"
+                        ],
                         "type": "object",
                         "properties": {
-                            "uuid_nfc": {
-                                "type": "string"
-                            },
-                            "user": {
+                            "user_name": {
                                 "type": "string"
                             },
                             "transactions": {
@@ -6194,7 +6846,13 @@
                                     "example": "string or id"
                                 }
                             },
-                            "pair_key": {
+                            "pass": {
+                                "type": "string"
+                            },
+                            "uuid": {
+                                "type": "string"
+                            },
+                            "shared_key": {
                                 "oneOf": [
                                     {
                                         "type": "integer"
@@ -6204,9 +6862,6 @@
                                     }
                                 ],
                                 "example": "string or id"
-                            },
-                            "pass": {
-                                "type": "string"
                             },
                             "locale": {
                                 "type": "string"
@@ -6266,6 +6921,9 @@
             },
             "NfcReader": {
                 "type": "object",
+                "required": [
+                    "uuid"
+                ],
                 "properties": {
                     "id": {
                         "type": "number"
@@ -6273,10 +6931,7 @@
                     "documentId": {
                         "type": "string"
                     },
-                    "uuid_nfc": {
-                        "type": "string"
-                    },
-                    "user": {
+                    "user_name": {
                         "type": "string"
                     },
                     "transactions": {
@@ -6305,10 +6960,7 @@
                                         "documentId": {
                                             "type": "string"
                                         },
-                                        "uuid_nfc": {
-                                            "type": "string"
-                                        },
-                                        "user": {
+                                        "user_name": {
                                             "type": "string"
                                         },
                                         "transactions": {
@@ -6336,10 +6988,6 @@
                                                     "documentId": {
                                                         "type": "string"
                                                     },
-                                                    "uuid_card": {
-                                                        "type": "string"
-                                                    },
-                                                    "data": {},
                                                     "nfc_reader": {
                                                         "type": "object",
                                                         "properties": {
@@ -6364,6 +7012,9 @@
                                                                 }
                                                             }
                                                         }
+                                                    },
+                                                    "uuid": {
+                                                        "type": "string"
                                                     },
                                                     "createdAt": {
                                                         "type": "string",
@@ -6671,7 +7322,13 @@
                                                 }
                                             }
                                         },
-                                        "pair_key": {
+                                        "pass": {
+                                            "type": "string"
+                                        },
+                                        "uuid": {
+                                            "type": "string"
+                                        },
+                                        "shared_key": {
                                             "type": "object",
                                             "properties": {
                                                 "id": {
@@ -6683,15 +7340,87 @@
                                                 "uuid": {
                                                     "type": "string"
                                                 },
-                                                "public_key": {
-                                                    "type": "string"
-                                                },
-                                                "private_key": {
-                                                    "type": "string"
+                                                "pair_key": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "number"
+                                                        },
+                                                        "documentId": {
+                                                            "type": "string"
+                                                        },
+                                                        "uuid": {
+                                                            "type": "string"
+                                                        },
+                                                        "public_key": {
+                                                            "type": "string"
+                                                        },
+                                                        "private_key": {
+                                                            "type": "string"
+                                                        },
+                                                        "valid_to": {
+                                                            "type": "string",
+                                                            "format": "date-time"
+                                                        },
+                                                        "createdAt": {
+                                                            "type": "string",
+                                                            "format": "date-time"
+                                                        },
+                                                        "updatedAt": {
+                                                            "type": "string",
+                                                            "format": "date-time"
+                                                        },
+                                                        "publishedAt": {
+                                                            "type": "string",
+                                                            "format": "date-time"
+                                                        },
+                                                        "createdBy": {
+                                                            "type": "object",
+                                                            "properties": {
+                                                                "id": {
+                                                                    "type": "number"
+                                                                },
+                                                                "documentId": {
+                                                                    "type": "string"
+                                                                }
+                                                            }
+                                                        },
+                                                        "updatedBy": {
+                                                            "type": "object",
+                                                            "properties": {
+                                                                "id": {
+                                                                    "type": "number"
+                                                                },
+                                                                "documentId": {
+                                                                    "type": "string"
+                                                                }
+                                                            }
+                                                        },
+                                                        "locale": {
+                                                            "type": "string"
+                                                        },
+                                                        "localizations": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "id": {
+                                                                        "type": "number"
+                                                                    },
+                                                                    "documentId": {
+                                                                        "type": "string"
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
                                                 },
                                                 "valid_to": {
                                                     "type": "string",
                                                     "format": "date-time"
+                                                },
+                                                "shared_key": {
+                                                    "type": "string"
                                                 },
                                                 "createdAt": {
                                                     "type": "string",
@@ -6745,9 +7474,6 @@
                                                     }
                                                 }
                                             }
-                                        },
-                                        "pass": {
-                                            "type": "string"
                                         },
                                         "createdAt": {
                                             "type": "string",
@@ -6888,7 +7614,13 @@
                             }
                         }
                     },
-                    "pair_key": {
+                    "pass": {
+                        "type": "string"
+                    },
+                    "uuid": {
+                        "type": "string"
+                    },
+                    "shared_key": {
                         "type": "object",
                         "properties": {
                             "id": {
@@ -6898,9 +7630,6 @@
                                 "type": "string"
                             }
                         }
-                    },
-                    "pass": {
-                        "type": "string"
                     },
                     "createdAt": {
                         "type": "string",
@@ -7440,6 +8169,582 @@
                 "properties": {
                     "data": {
                         "$ref": "#/components/schemas/PairKey"
+                    },
+                    "meta": {
+                        "type": "object"
+                    }
+                }
+            },
+            "SharedKeyRequest": {
+                "type": "object",
+                "required": [
+                    "data"
+                ],
+                "properties": {
+                    "data": {
+                        "required": [
+                            "uuid",
+                            "valid_to"
+                        ],
+                        "type": "object",
+                        "properties": {
+                            "uuid": {
+                                "type": "string"
+                            },
+                            "pair_key": {
+                                "oneOf": [
+                                    {
+                                        "type": "integer"
+                                    },
+                                    {
+                                        "type": "string"
+                                    }
+                                ],
+                                "example": "string or id"
+                            },
+                            "valid_to": {
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            "shared_key": {
+                                "type": "string"
+                            },
+                            "locale": {
+                                "type": "string"
+                            },
+                            "localizations": {
+                                "type": "array",
+                                "items": {
+                                    "oneOf": [
+                                        {
+                                            "type": "integer"
+                                        },
+                                        {
+                                            "type": "string"
+                                        }
+                                    ],
+                                    "example": "string or id"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "SharedKeyListResponse": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/SharedKey"
+                        }
+                    },
+                    "meta": {
+                        "type": "object",
+                        "properties": {
+                            "pagination": {
+                                "type": "object",
+                                "properties": {
+                                    "page": {
+                                        "type": "integer"
+                                    },
+                                    "pageSize": {
+                                        "type": "integer",
+                                        "minimum": 25
+                                    },
+                                    "pageCount": {
+                                        "type": "integer",
+                                        "maximum": 1
+                                    },
+                                    "total": {
+                                        "type": "integer"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "SharedKey": {
+                "type": "object",
+                "required": [
+                    "uuid",
+                    "valid_to"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "documentId": {
+                        "type": "string"
+                    },
+                    "uuid": {
+                        "type": "string"
+                    },
+                    "pair_key": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "number"
+                            },
+                            "documentId": {
+                                "type": "string"
+                            },
+                            "uuid": {
+                                "type": "string"
+                            },
+                            "public_key": {
+                                "type": "string"
+                            },
+                            "private_key": {
+                                "type": "string"
+                            },
+                            "valid_to": {
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            "createdAt": {
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            "updatedAt": {
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            "publishedAt": {
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            "createdBy": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "number"
+                                    },
+                                    "documentId": {
+                                        "type": "string"
+                                    },
+                                    "firstname": {
+                                        "type": "string"
+                                    },
+                                    "lastname": {
+                                        "type": "string"
+                                    },
+                                    "username": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "resetPasswordToken": {
+                                        "type": "string"
+                                    },
+                                    "registrationToken": {
+                                        "type": "string"
+                                    },
+                                    "isActive": {
+                                        "type": "boolean"
+                                    },
+                                    "roles": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "number"
+                                                },
+                                                "documentId": {
+                                                    "type": "string"
+                                                },
+                                                "name": {
+                                                    "type": "string"
+                                                },
+                                                "code": {
+                                                    "type": "string"
+                                                },
+                                                "description": {
+                                                    "type": "string"
+                                                },
+                                                "users": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "number"
+                                                            },
+                                                            "documentId": {
+                                                                "type": "string"
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                "permissions": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "number"
+                                                            },
+                                                            "documentId": {
+                                                                "type": "string"
+                                                            },
+                                                            "action": {
+                                                                "type": "string"
+                                                            },
+                                                            "actionParameters": {},
+                                                            "subject": {
+                                                                "type": "string"
+                                                            },
+                                                            "properties": {},
+                                                            "conditions": {},
+                                                            "role": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "id": {
+                                                                        "type": "number"
+                                                                    },
+                                                                    "documentId": {
+                                                                        "type": "string"
+                                                                    }
+                                                                }
+                                                            },
+                                                            "createdAt": {
+                                                                "type": "string",
+                                                                "format": "date-time"
+                                                            },
+                                                            "updatedAt": {
+                                                                "type": "string",
+                                                                "format": "date-time"
+                                                            },
+                                                            "publishedAt": {
+                                                                "type": "string",
+                                                                "format": "date-time"
+                                                            },
+                                                            "createdBy": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "id": {
+                                                                        "type": "number"
+                                                                    },
+                                                                    "documentId": {
+                                                                        "type": "string"
+                                                                    }
+                                                                }
+                                                            },
+                                                            "updatedBy": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "id": {
+                                                                        "type": "number"
+                                                                    },
+                                                                    "documentId": {
+                                                                        "type": "string"
+                                                                    }
+                                                                }
+                                                            },
+                                                            "locale": {
+                                                                "type": "string"
+                                                            },
+                                                            "localizations": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "type": "object",
+                                                                    "properties": {
+                                                                        "id": {
+                                                                            "type": "number"
+                                                                        },
+                                                                        "documentId": {
+                                                                            "type": "string"
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                "createdAt": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                },
+                                                "updatedAt": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                },
+                                                "publishedAt": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                },
+                                                "createdBy": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "number"
+                                                        },
+                                                        "documentId": {
+                                                            "type": "string"
+                                                        }
+                                                    }
+                                                },
+                                                "updatedBy": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "number"
+                                                        },
+                                                        "documentId": {
+                                                            "type": "string"
+                                                        }
+                                                    }
+                                                },
+                                                "locale": {
+                                                    "type": "string"
+                                                },
+                                                "localizations": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "number"
+                                                            },
+                                                            "documentId": {
+                                                                "type": "string"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "blocked": {
+                                        "type": "boolean"
+                                    },
+                                    "preferedLanguage": {
+                                        "type": "string"
+                                    },
+                                    "createdAt": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    },
+                                    "updatedAt": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    },
+                                    "publishedAt": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    },
+                                    "createdBy": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "number"
+                                            },
+                                            "documentId": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    },
+                                    "updatedBy": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "number"
+                                            },
+                                            "documentId": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    },
+                                    "locale": {
+                                        "type": "string"
+                                    },
+                                    "localizations": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "number"
+                                                },
+                                                "documentId": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "updatedBy": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "number"
+                                    },
+                                    "documentId": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "locale": {
+                                "type": "string"
+                            },
+                            "localizations": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "number"
+                                        },
+                                        "documentId": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "valid_to": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "shared_key": {
+                        "type": "string"
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updatedAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "publishedAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "createdBy": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "number"
+                            },
+                            "documentId": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "updatedBy": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "number"
+                            },
+                            "documentId": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "locale": {
+                        "type": "string"
+                    },
+                    "localizations": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "number"
+                                },
+                                "documentId": {
+                                    "type": "string"
+                                },
+                                "uuid": {
+                                    "type": "string"
+                                },
+                                "pair_key": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "number"
+                                        },
+                                        "documentId": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "valid_to": {
+                                    "type": "string",
+                                    "format": "date-time"
+                                },
+                                "shared_key": {
+                                    "type": "string"
+                                },
+                                "createdAt": {
+                                    "type": "string",
+                                    "format": "date-time"
+                                },
+                                "updatedAt": {
+                                    "type": "string",
+                                    "format": "date-time"
+                                },
+                                "publishedAt": {
+                                    "type": "string",
+                                    "format": "date-time"
+                                },
+                                "createdBy": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "number"
+                                        },
+                                        "documentId": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "updatedBy": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "number"
+                                        },
+                                        "documentId": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "locale": {
+                                    "type": "string"
+                                },
+                                "localizations": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "number"
+                                            },
+                                            "documentId": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "SharedKeyResponse": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "$ref": "#/components/schemas/SharedKey"
                     },
                     "meta": {
                         "type": "object"
@@ -8138,10 +9443,7 @@
                             "documentId": {
                                 "type": "string"
                             },
-                            "uuid_nfc": {
-                                "type": "string"
-                            },
-                            "user": {
+                            "user_name": {
                                 "type": "string"
                             },
                             "transactions": {
@@ -8181,10 +9483,6 @@
                                                 "documentId": {
                                                     "type": "string"
                                                 },
-                                                "uuid_card": {
-                                                    "type": "string"
-                                                },
-                                                "data": {},
                                                 "nfc_reader": {
                                                     "type": "object",
                                                     "properties": {
@@ -8209,6 +9507,9 @@
                                                             }
                                                         }
                                                     }
+                                                },
+                                                "uuid": {
+                                                    "type": "string"
                                                 },
                                                 "createdAt": {
                                                     "type": "string",
@@ -8590,7 +9891,13 @@
                                     }
                                 }
                             },
-                            "pair_key": {
+                            "pass": {
+                                "type": "string"
+                            },
+                            "uuid": {
+                                "type": "string"
+                            },
+                            "shared_key": {
                                 "type": "object",
                                 "properties": {
                                     "id": {
@@ -8602,15 +9909,87 @@
                                     "uuid": {
                                         "type": "string"
                                     },
-                                    "public_key": {
-                                        "type": "string"
-                                    },
-                                    "private_key": {
-                                        "type": "string"
+                                    "pair_key": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "number"
+                                            },
+                                            "documentId": {
+                                                "type": "string"
+                                            },
+                                            "uuid": {
+                                                "type": "string"
+                                            },
+                                            "public_key": {
+                                                "type": "string"
+                                            },
+                                            "private_key": {
+                                                "type": "string"
+                                            },
+                                            "valid_to": {
+                                                "type": "string",
+                                                "format": "date-time"
+                                            },
+                                            "createdAt": {
+                                                "type": "string",
+                                                "format": "date-time"
+                                            },
+                                            "updatedAt": {
+                                                "type": "string",
+                                                "format": "date-time"
+                                            },
+                                            "publishedAt": {
+                                                "type": "string",
+                                                "format": "date-time"
+                                            },
+                                            "createdBy": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "number"
+                                                    },
+                                                    "documentId": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            },
+                                            "updatedBy": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "number"
+                                                    },
+                                                    "documentId": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            },
+                                            "locale": {
+                                                "type": "string"
+                                            },
+                                            "localizations": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "number"
+                                                        },
+                                                        "documentId": {
+                                                            "type": "string"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
                                     },
                                     "valid_to": {
                                         "type": "string",
                                         "format": "date-time"
+                                    },
+                                    "shared_key": {
+                                        "type": "string"
                                     },
                                     "createdAt": {
                                         "type": "string",
@@ -8664,9 +10043,6 @@
                                         }
                                     }
                                 }
-                            },
-                            "pass": {
-                                "type": "string"
                             },
                             "createdAt": {
                                 "type": "string",

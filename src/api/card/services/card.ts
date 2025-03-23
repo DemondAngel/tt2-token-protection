@@ -5,29 +5,31 @@
 import { factories } from '@strapi/strapi';
 import { v4 as uuidv4 } from 'uuid';
 import jwt from 'jsonwebtoken';
+import { createHash } from 'crypto';
 
 export default factories.createCoreService('api::card.card', ({strapi}) => ({
-    async createCard(uuid_nfc: string){
+    async createCard(nfcUuid: string){
         let entry = null;
         let response = null;
         try{
 
             const nfcReader = await strapi.db.query('api::nfc-reader.nfc-reader').findOne({
                 where: {
-                    uuid_nfc: uuid_nfc
+                    uuid: nfcUuid
                 },
                 select: ['id']
             })
 
             if(nfcReader !== null){
                 do{
-                    const uuid = uuidv4();
+                    const bigUuid = uuidv4();
+                    const uuid = createHash('sha256').update(bigUuid).digest('hex').substring(0, 16);
     
                     const query = await strapi.db.query("api::card.card").findOne({
                         where: {
-                            uuid_card: uuid,
+                            uuid: uuid,
                         },
-                        select: ['uuid_card']
+                        select: ['uuid']
                     });
     
                     console.log(query);
@@ -36,7 +38,7 @@ export default factories.createCoreService('api::card.card', ({strapi}) => ({
     
                         entry = await strapi.db.query('api::card.card').create({
                             data: {
-                                uuid_card: uuid,
+                                uuid: uuid,
                                 nfc_reader: nfcReader.id
                             }
                         });
@@ -68,16 +70,16 @@ export default factories.createCoreService('api::card.card', ({strapi}) => ({
         return response;
     },
 
-    async generateToken(uuid_nfc: string, uuid_card: string) {
+    async generateToken(nfcUuid: string, cardUuid: string) {
 
         try{
             const nfcReader = await strapi.db.query('api::nfc-reader.nfc-reader').findOne({
                 where: {
-                    uuid_nfc: uuid_nfc
+                    uuid: nfcUuid
                 },
-                select: ['uuid_nfc'],
+                select: ['uuid'],
                 populate: {
-                    "pair_key": true
+                    "shared_key": true
                 }
             });
 
@@ -89,9 +91,9 @@ export default factories.createCoreService('api::card.card', ({strapi}) => ({
     
             const card = await strapi.db.query('api::card.card').findOne({
                 where: {
-                    uuid_card: uuid_card
+                    uuid: cardUuid
                 },
-                select: ['uuid_card'],
+                select: ['uuid'],
                 populate: {
                     "nfc_reader": true
                 }
@@ -108,13 +110,8 @@ export default factories.createCoreService('api::card.card', ({strapi}) => ({
             if(tokensVersion.status === 200){
                 console.log(`Generating payload`);
                 const payload = {
-                    'uuid_nfc': nfcReader.uuid_nfc,
-                    'uuid_nfc_key': nfcReader.pair_key.uuid,
-                    'uuid_card': card.uuid_card,
-                    'uuid_nfc_register': card.nfc_reader.uuid_nfc,
-                    'uuid_tokens_version': tokensVersion.tokensVersion.uuid,
-                    'uuid_tokens_version_key': tokensVersion.tokensVersion.uuidKey,
-                    'hops': 10
+                    'cUuid': card.uuid,
+                    'tvUuid': tokensVersion.tokensVersion.uuid,
                 };
                 const privateKey = tokensVersion.tokensVersion.privateKey;
                 const token = jwt.sign(payload, privateKey, {
@@ -127,10 +124,11 @@ export default factories.createCoreService('api::card.card', ({strapi}) => ({
                 const registerTransaction = await strapi.service('api::transaction.transaction').registerTransaction('CREATED',token,nfcReader.id,card.id);
 
                 if(registerTransaction.status === 204){
+                    console.log("Se regreso token");
                     return {
                         status: 200,
                         token: token,
-                        uuid_tokens_version: tokensVersion.tokensVersion.uuid
+                        tokensVersionUuid: tokensVersion.tokensVersion.uuid
                     };
                 }
 

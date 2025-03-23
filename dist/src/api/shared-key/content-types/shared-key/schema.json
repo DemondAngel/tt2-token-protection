@@ -1,0 +1,31 @@
+{
+    "kind": "collectionType",
+    "collectionName": "shared_keys",
+    "info": {
+        "singularName": "shared-key",
+        "pluralName": "shared-keys",
+        "displayName": "shared_key",
+        "description": ""
+    },
+    "options": {
+        "draftAndPublish": false
+    },
+    "attributes": {
+        "uuid": {
+            "type": "uid",
+            "required": true
+        },
+        "pair_key": {
+            "type": "relation",
+            "relation": "oneToOne",
+            "target": "api::pair-key.pair-key"
+        },
+        "valid_to": {
+            "type": "datetime",
+            "required": true
+        },
+        "shared_key": {
+            "type": "string"
+        }
+    }
+}

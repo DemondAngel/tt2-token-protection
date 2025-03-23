@@ -19,7 +19,7 @@ export default (config, { strapi }: { strapi: Core.Strapi }) => {
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET as string); // Reemplaza con tu clave secreta JWT
       //valida datos del payload aqui.
-      if(decoded['nfc-reader']){
+      if(decoded['nfcReader']){
           ctx.state.user = decoded; // Almacena la información decodificada en ctx.state.user
           await next(); // Continúa con la siguiente función middleware o controlador
       } else {

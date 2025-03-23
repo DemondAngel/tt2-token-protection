@@ -6,24 +6,24 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const strapi_1 = require("@strapi/strapi");
 const uuid_1 = require("uuid");
 exports.default = strapi_1.factories.createCoreService('api::transaction.transaction', ({ strapi }) => ({
-    async registerTransaction(action, token, id_nfc_reader, id_card) {
+    async registerTransaction(action, token, nfcReaderId, cardId) {
         let entry = null;
         let response = null;
         do {
             const uuid = (0, uuid_1.v4)();
             const query = await strapi.db.query("api::card.card").findOne({
                 where: {
-                    uuid_card: uuid,
+                    uuid: uuid,
                 },
-                select: ['uuid_card']
+                select: ['uuid']
             });
             console.log(query);
             if (query == null || query) {
                 entry = await strapi.db.query('api::transaction.transaction').create({
                     data: {
                         uuid: uuid,
-                        nfc_reader: id_nfc_reader,
-                        card: id_card,
+                        nfc_reader: nfcReaderId,
+                        card: cardId,
                         token: token,
                         action: action,
                     }
@@ -32,7 +32,7 @@ exports.default = strapi_1.factories.createCoreService('api::transaction.transac
                     'status': 204
                 };
             }
-        } while (entry == null);
+        } while (entry === null);
         return response;
     },
     async verifyTokenUsage(token) {
