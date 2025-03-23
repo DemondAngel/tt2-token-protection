@@ -11,12 +11,6 @@
         "draftAndPublish": false
     },
     "attributes": {
-        "uuid_card": {
-            "type": "uid"
-        },
-        "data": {
-            "type": "json"
-        },
         "nfc_reader": {
             "type": "relation",
             "relation": "manyToOne",
@@ -28,6 +22,10 @@
             "relation": "oneToMany",
             "target": "api::transaction.transaction",
             "mappedBy": "card"
+        },
+        "uuid": {
+            "type": "uid",
+            "required": true
         }
     }
 }

@@ -26,10 +26,10 @@ export default factories.createCoreController('api::card.card', ({strapi}) => ({
 
         let body = ctx.request.body;
 
-        const uuid_nfc: string = body.uuid_nfc;
+        const nfcUuid: string = body.nfcUuid;
         try{
             
-            let responseCreateService = await strapi.service('api::card.card').createCard(uuid_nfc);
+            let responseCreateService = await strapi.service('api::card.card').createCard(nfcUuid);
 
             if(responseCreateService.status === 200){
                 return responseCreateService;
@@ -60,12 +60,12 @@ export default factories.createCoreController('api::card.card', ({strapi}) => ({
 
         let body = ctx.request.body;
 
-        const uuid_nfc: string = body.uuid_nfc;
-        const uuid_card: string = body.uuid_card;
+        const nfcUuid: string = body.nfcUuid;
+        const cardUuid: string = body.cardUuid;
 
         try{
             
-            let responseCreateService = await strapi.service('api::card.card').generateToken(uuid_nfc, uuid_card);
+            let responseCreateService = await strapi.service('api::card.card').generateToken(nfcUuid, cardUuid);
 
             if(responseCreateService.status === 200){
                 console.log(responseCreateService);

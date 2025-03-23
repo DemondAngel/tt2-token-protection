@@ -8,7 +8,7 @@ import card from '../../card/controllers/card';
 
 export default factories.createCoreService('api::transaction.transaction', ({strapi}) => ({
 
-    async registerTransaction(action: string, token: string, id_nfc_reader: string, id_card: string){
+    async registerTransaction(action: string, token: string, nfcReaderId: string, cardId: string){
 
         let entry = null;
         let response = null;
@@ -18,9 +18,9 @@ export default factories.createCoreService('api::transaction.transaction', ({str
 
             const query = await strapi.db.query("api::card.card").findOne({
                 where: {
-                    uuid_card: uuid,
+                    uuid: uuid,
                 },
-                select: ['uuid_card']
+                select: ['uuid']
             });
 
             console.log(query);
@@ -30,8 +30,8 @@ export default factories.createCoreService('api::transaction.transaction', ({str
                 entry = await strapi.db.query('api::transaction.transaction').create({
                     data: {
                         uuid: uuid,
-                        nfc_reader: id_nfc_reader,
-                        card: id_card,
+                        nfc_reader: nfcReaderId,
+                        card: cardId,
                         token: token,
                         action: action,
                     }
@@ -41,7 +41,7 @@ export default factories.createCoreService('api::transaction.transaction', ({str
                 };
             }
         }
-        while(entry == null);
+        while(entry === null);
 
         return response;
 

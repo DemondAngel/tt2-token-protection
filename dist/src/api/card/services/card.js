@@ -9,31 +9,33 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const strapi_1 = require("@strapi/strapi");
 const uuid_1 = require("uuid");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const crypto_1 = require("crypto");
 exports.default = strapi_1.factories.createCoreService('api::card.card', ({ strapi }) => ({
-    async createCard(uuid_nfc) {
+    async createCard(nfcUuid) {
         let entry = null;
         let response = null;
         try {
             const nfcReader = await strapi.db.query('api::nfc-reader.nfc-reader').findOne({
                 where: {
-                    uuid_nfc: uuid_nfc
+                    uuid: nfcUuid
                 },
                 select: ['id']
             });
             if (nfcReader !== null) {
                 do {
-                    const uuid = (0, uuid_1.v4)();
+                    const bigUuid = (0, uuid_1.v4)();
+                    const uuid = (0, crypto_1.createHash)('sha256').update(bigUuid).digest('hex').substring(0, 16);
                     const query = await strapi.db.query("api::card.card").findOne({
                         where: {
-                            uuid_card: uuid,
+                            uuid: uuid,
                         },
-                        select: ['uuid_card']
+                        select: ['uuid']
                     });
                     console.log(query);
                     if (query == null || query) {
                         entry = await strapi.db.query('api::card.card').create({
                             data: {
-                                uuid_card: uuid,
+                                uuid: uuid,
                                 nfc_reader: nfcReader.id
                             }
                         });
@@ -62,15 +64,15 @@ exports.default = strapi_1.factories.createCoreService('api::card.card', ({ stra
         }
         return response;
     },
-    async generateToken(uuid_nfc, uuid_card) {
+    async generateToken(nfcUuid, cardUuid) {
         try {
             const nfcReader = await strapi.db.query('api::nfc-reader.nfc-reader').findOne({
                 where: {
-                    uuid_nfc: uuid_nfc
+                    uuid: nfcUuid
                 },
-                select: ['uuid_nfc'],
+                select: ['uuid'],
                 populate: {
-                    "pair_key": true
+                    "shared_key": true
                 }
             });
             if (!nfcReader || nfcReader === null)
@@ -80,9 +82,9 @@ exports.default = strapi_1.factories.createCoreService('api::card.card', ({ stra
                 };
             const card = await strapi.db.query('api::card.card').findOne({
                 where: {
-                    uuid_card: uuid_card
+                    uuid: cardUuid
                 },
-                select: ['uuid_card'],
+                select: ['uuid'],
                 populate: {
                     "nfc_reader": true
                 }
@@ -97,13 +99,8 @@ exports.default = strapi_1.factories.createCoreService('api::card.card', ({ stra
             if (tokensVersion.status === 200) {
                 console.log(`Generating payload`);
                 const payload = {
-                    'uuid_nfc': nfcReader.uuid_nfc,
-                    'uuid_nfc_key': nfcReader.pair_key.uuid,
-                    'uuid_card': card.uuid_card,
-                    'uuid_nfc_register': card.nfc_reader.uuid_nfc,
-                    'uuid_tokens_version': tokensVersion.tokensVersion.uuid,
-                    'uuid_tokens_version_key': tokensVersion.tokensVersion.uuidKey,
-                    'hops': 10
+                    'cUuid': card.uuid,
+                    'tvUuid': tokensVersion.tokensVersion.uuid,
                 };
                 const privateKey = tokensVersion.tokensVersion.privateKey;
                 const token = jsonwebtoken_1.default.sign(payload, privateKey, {
@@ -113,10 +110,11 @@ exports.default = strapi_1.factories.createCoreService('api::card.card', ({ stra
                 console.log(`token ${token}`);
                 const registerTransaction = await strapi.service('api::transaction.transaction').registerTransaction('CREATED', token, nfcReader.id, card.id);
                 if (registerTransaction.status === 204) {
+                    console.log("Se regreso token");
                     return {
                         status: 200,
                         token: token,
-                        uuid_tokens_version: tokensVersion.tokensVersion.uuid
+                        tokensVersionUuid: tokensVersion.tokensVersion.uuid
                     };
                 }
                 return {
