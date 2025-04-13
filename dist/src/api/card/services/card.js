@@ -9,7 +9,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const strapi_1 = require("@strapi/strapi");
 const uuid_1 = require("uuid");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const crypto_1 = require("crypto");
 exports.default = strapi_1.factories.createCoreService('api::card.card', ({ strapi }) => ({
     async createCard(nfcUuid) {
         let entry = null;
@@ -23,8 +22,7 @@ exports.default = strapi_1.factories.createCoreService('api::card.card', ({ stra
             });
             if (nfcReader !== null) {
                 do {
-                    const bigUuid = (0, uuid_1.v4)();
-                    const uuid = (0, crypto_1.createHash)('sha256').update(bigUuid).digest('hex').substring(0, 16);
+                    const uuid = (0, uuid_1.v4)().replace(/-/g, "");
                     const query = await strapi.db.query("api::card.card").findOne({
                         where: {
                             uuid: uuid,
@@ -99,21 +97,25 @@ exports.default = strapi_1.factories.createCoreService('api::card.card', ({ stra
             if (tokensVersion.status === 200) {
                 console.log(`Generating payload`);
                 const payload = {
-                    'cUuid': card.uuid,
-                    'tvUuid': tokensVersion.tokensVersion.uuid,
+                    'cardUuid': card.uuid,
+                    'tokenVersionUuid': tokensVersion.tokensVersion.uuid,
+                    'sharedKeyUuid': nfcReader.shared_key.uuid,
+                    'nfcReader': nfcReader.uuid,
+                    'nfcReaderRegister': card.nfc_reader.uuid,
                 };
                 const privateKey = tokensVersion.tokensVersion.privateKey;
                 const token = jsonwebtoken_1.default.sign(payload, privateKey, {
                     algorithm: 'ES256',
                     expiresIn: 60 * 60 * 24 * 365
                 });
+                const tokenDivided = await this.divideTokenInto256Chars(token);
                 console.log(`token ${token}`);
                 const registerTransaction = await strapi.service('api::transaction.transaction').registerTransaction('CREATED', token, nfcReader.id, card.id);
                 if (registerTransaction.status === 204) {
                     console.log("Se regreso token");
                     return {
                         status: 200,
-                        token: token,
+                        token: tokenDivided,
                         tokensVersionUuid: tokensVersion.tokensVersion.uuid
                     };
                 }
@@ -137,20 +139,28 @@ exports.default = strapi_1.factories.createCoreService('api::card.card', ({ stra
             };
         }
     },
-    async validateToken(jwt_card, uuid_card, uuid_tokens_version) {
-        console.log(`There is the token ${jwt_card}`);
-        console.log(`There is the uuid_card ${uuid_card}`);
+    async divideTokenInto256Chars(token) {
+        const chunkSize = 255;
+        const chunks = [];
+        for (let i = 0; i < token.length; i += chunkSize) {
+            chunks.push(token.substring(i, i + chunkSize));
+        }
+        return chunks;
+    },
+    async validateToken(jwtCard, cardUuid, tokensVersionUuid) {
+        console.log(`There is the token ${jwtCard}`);
+        console.log(`There is the uuid_card ${cardUuid}`);
         try {
-            const verifyUsage = await strapi.service("api::transaction.transaction").verifyTokenUsage(jwt_card);
+            const verifyUsage = await strapi.service("api::transaction.transaction").verifyTokenUsage(jwtCard);
             console.log(`Verify usage ${JSON.stringify(verifyUsage)}`);
             if (verifyUsage.status === 200) {
-                const retrievePublicKey = await strapi.service("api::tokens-version.tokens-version").retrievePublicKey(uuid_tokens_version);
+                const retrievePublicKey = await strapi.service("api::tokens-version.tokens-version").retrievePublicKey(tokensVersionUuid);
                 if (retrievePublicKey.status === 200) {
                     const publicKey = retrievePublicKey.publicKey;
                     try {
-                        const decoded = jsonwebtoken_1.default.verify(jwt_card, publicKey, { algorithms: ['ES256'] });
+                        const decoded = jsonwebtoken_1.default.verify(jwtCard, publicKey, { algorithms: ['ES256'] });
                         console.log(`Decoded JSON ${JSON.stringify(decoded)}`);
-                        if (uuid_card === decoded.uuid_card) {
+                        if (cardUuid === decoded.cardUuid) {
                             const verifyCard = await strapi.service("api::dark-list.dark-list").verifyCard(verifyUsage.id_card);
                             if (verifyCard.locked) {
                                 return {

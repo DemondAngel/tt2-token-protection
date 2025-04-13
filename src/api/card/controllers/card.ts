@@ -45,6 +45,7 @@ export default factories.createCoreController('api::card.card', ({strapi}) => ({
             }
         }
         catch(err){
+            console.log(err);
             ctx.body = err;
         }
     },
@@ -81,12 +82,13 @@ export default factories.createCoreController('api::card.card', ({strapi}) => ({
             }
         }
         catch(err){
+            console.log(err);
             ctx.body = err;
         }
     },
 
     async validate(ctx: any){
-
+        console.log(`Esto es lo que esta llegando al controlador de validate ${JSON.stringify(ctx.request.body)}`);
         const valid = validateValidate(ctx.request.body);
 
         if(!valid) {
@@ -96,7 +98,12 @@ export default factories.createCoreController('api::card.card', ({strapi}) => ({
         try{
             const body = ctx.request.body 
 
-            const responseValidation = await strapi.service("api::card.card").validateToken(body.jwt_card, body.uuid_card, body.uuid_tokens_version);
+            let token: string = "";
+
+            for(let i = 0; i < body.jwtCard.length; i++)
+                token += body.jwtCard[i];
+            
+            const responseValidation = await strapi.service("api::card.card").validateToken(token, body.cardUuid, body.tokensVersionUuid);
 
             return responseValidation;
 

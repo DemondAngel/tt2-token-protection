@@ -11,6 +11,7 @@ exports.default = strapi_1.factories.createCoreService('api::nfc-reader.nfc-read
         //await strapi.db.query('api::shared-key.shared-key').deleteMany({});
         let sharedKeyUuid = "";
         let sharedKey = "";
+        let iv = "";
         let sharedKeyId = 0;
         const nfcReader = await strapi.db.query('api::nfc-reader.nfc-reader').findOne({
             'where': {
@@ -36,6 +37,7 @@ exports.default = strapi_1.factories.createCoreService('api::nfc-reader.nfc-read
                 sharedKeyId = responseGenerateSharedKey.id;
                 sharedKeyUuid = responseGenerateSharedKey.uuid;
                 sharedKey = responseGenerateSharedKey.shared_key;
+                iv = responseGenerateSharedKey.iv;
             }
             else {
                 console.log(`Renovating shared key`);
@@ -46,6 +48,7 @@ exports.default = strapi_1.factories.createCoreService('api::nfc-reader.nfc-read
                 sharedKeyId = responseRenovateSharedKey.sharedKey.id;
                 sharedKeyUuid = responseRenovateSharedKey.sharedKey.uuid;
                 sharedKey = responseRenovateSharedKey.sharedKey.shared_key;
+                iv = responseRenovateSharedKey.sharedKey.iv;
             }
             const updateEntry = await strapi.db.query('api::nfc-reader.nfc-reader').update({
                 'where': {
@@ -70,7 +73,8 @@ exports.default = strapi_1.factories.createCoreService('api::nfc-reader.nfc-read
                 //'private_key': privateKey,
                 'NFCReaderUuid': nfcReader.uuid,
                 'sharedKeyUuid': sharedKeyUuid,
-                'sharedKey': sharedKey
+                'sharedKey': sharedKey,
+                'iv': iv
             };
         }
         return {
