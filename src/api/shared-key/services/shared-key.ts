@@ -17,14 +17,15 @@ export default factories.createCoreService('api::shared-key.shared-key', ({strap
         const pairKey: PairKey = await strapi.service('api::pair-key.pair-key').generateKeys();
         console.log(`Este es el pairKey: ${JSON.stringify(pairKey)}`);
         do{
-          const bigUuid = uuidv4();
-          const uuid = createHash('sha256').update(bigUuid).digest('hex').substring(0, 16);
+          const uuid = uuidv4().replace(/-/g, "");
           const randomSalt = randomBytes(16);
-          const sharedKey = createHash('sha256')
+          const sharedKeyHash = createHash('sha256')
             .update(pairKey.private_key)
             .update(uuid)
             .update(randomSalt)
             .digest('hex');
+
+          const sharedKey = sharedKeyHash.substring(0,16);
 
           entry = await strapi.db.query('api::shared-key.shared-key').findOne({
           select: ['uuid', 'shared_key'],
@@ -91,6 +92,21 @@ export default factories.createCoreService('api::shared-key.shared-key', ({strap
           sharedKey: entry
         };
       }
+
+    },
+    async getByUuid(uuid: string) {
+      
+      const entry: SharedKey | null | undefined = await strapi.db.query("api::shared-key.shared-key").findOne({
+        where: {
+          uuid: uuid
+        },
+        populate: {
+          pair_key: true,
+          nfc_reader: true,
+        }
+      });
+
+      return entry;
 
     }
 }));

@@ -22,8 +22,7 @@ export default factories.createCoreService('api::card.card', ({strapi}) => ({
 
             if(nfcReader !== null){
                 do{
-                    const bigUuid = uuidv4();
-                    const uuid = createHash('sha256').update(bigUuid).digest('hex').substring(0, 16);
+                    const uuid = uuidv4().replace(/-/g, "");
     
                     const query = await strapi.db.query("api::card.card").findOne({
                         where: {
@@ -73,7 +72,7 @@ export default factories.createCoreService('api::card.card', ({strapi}) => ({
     async generateToken(nfcUuid: string, cardUuid: string) {
 
         try{
-            const nfcReader = await strapi.db.query('api::nfc-reader.nfc-reader').findOne({
+            const nfcReader: NFCReader | null | undefined = await strapi.db.query('api::nfc-reader.nfc-reader').findOne({
                 where: {
                     uuid: nfcUuid
                 },
@@ -89,7 +88,7 @@ export default factories.createCoreService('api::card.card', ({strapi}) => ({
                     message: 'Does not exists NFC reader'
                 };
     
-            const card = await strapi.db.query('api::card.card').findOne({
+            const card: Card | undefined | null = await strapi.db.query('api::card.card').findOne({
                 where: {
                     uuid: cardUuid
                 },
@@ -110,14 +109,20 @@ export default factories.createCoreService('api::card.card', ({strapi}) => ({
             if(tokensVersion.status === 200){
                 console.log(`Generating payload`);
                 const payload = {
-                    'cUuid': card.uuid,
-                    'tvUuid': tokensVersion.tokensVersion.uuid,
+                    'cardUuid': card.uuid,
+                    'tokenVersionUuid': tokensVersion.tokensVersion.uuid,
+                    'sharedKeyUuid': nfcReader.shared_key.uuid,
+                    'nfcReader': nfcReader.uuid,
+                    'nfcReaderRegister': card.nfc_reader.uuid,
                 };
+
                 const privateKey = tokensVersion.tokensVersion.privateKey;
                 const token = jwt.sign(payload, privateKey, {
                     algorithm: 'ES256',
                     expiresIn: 60 * 60 * 24 * 365
                 });
+
+                const tokenDivided: string[] =  await this.divideTokenInto256Chars(token);
                 
                 console.log(`token ${token}`);
 
@@ -127,7 +132,7 @@ export default factories.createCoreService('api::card.card', ({strapi}) => ({
                     console.log("Se regreso token");
                     return {
                         status: 200,
-                        token: token,
+                        token: tokenDivided,
                         tokensVersionUuid: tokensVersion.tokensVersion.uuid
                     };
                 }
@@ -155,26 +160,37 @@ export default factories.createCoreService('api::card.card', ({strapi}) => ({
 
     },
 
-    async validateToken(jwt_card: string, uuid_card: string, uuid_tokens_version: string){
+    async divideTokenInto256Chars(token: string){
+        const chunkSize: number = 255;
+        const chunks: string[] = [];
+    
+        for (let i = 0; i < token.length; i += chunkSize) {
+            chunks.push(token.substring(i, i + chunkSize));
+        }
+        
+        return chunks;
+    },
 
-        console.log(`There is the token ${jwt_card}`);
-        console.log(`There is the uuid_card ${uuid_card}`);
+    async validateToken(jwtCard: string, cardUuid: string, tokensVersionUuid: string){
+
+        console.log(`There is the token ${jwtCard}`);
+        console.log(`There is the uuid_card ${cardUuid}`);
         try{
-            const verifyUsage = await strapi.service("api::transaction.transaction").verifyTokenUsage(jwt_card);
+            const verifyUsage = await strapi.service("api::transaction.transaction").verifyTokenUsage(jwtCard);
 
             console.log(`Verify usage ${JSON.stringify(verifyUsage)}`);
 
             if(verifyUsage.status === 200){
-                const retrievePublicKey = await strapi.service("api::tokens-version.tokens-version").retrievePublicKey(uuid_tokens_version);
+                const retrievePublicKey = await strapi.service("api::tokens-version.tokens-version").retrievePublicKey(tokensVersionUuid);
 
                 if(retrievePublicKey.status === 200){
                     const publicKey = retrievePublicKey.publicKey;
                     
                     try{
-                        const decoded:any = jwt.verify(jwt_card, publicKey, {algorithms: ['ES256']});
+                        const decoded:any = jwt.verify(jwtCard, publicKey, {algorithms: ['ES256']});
                         console.log(`Decoded JSON ${JSON.stringify(decoded)}`);
 
-                        if(uuid_card === decoded.uuid_card){
+                        if(cardUuid === decoded.cardUuid){
                             
                             const verifyCard = await strapi.service("api::dark-list.dark-list").verifyCard(verifyUsage.id_card);
 

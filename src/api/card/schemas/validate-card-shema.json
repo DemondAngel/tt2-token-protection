@@ -2,9 +2,15 @@
     "$schema": "http://json-schema.org/draft-07/schema#",
     "type": "object",
     "properties": {
-      "uuid_card": { "type": "string"},
-      "uuid_tokens_version": {"type": "string"},
-      "jwt_card": {"type": "string"}
+      "cardUuid": { "type": "string"},
+      "tokensVersionUuid": {"type": "string"},
+      "jwtCard": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "minItems": 1
+      }
     },
-    "required": ["uuid_card", "jwt_card", "uuid_tokens_version"]
+    "required": ["cardUuid", "tokensVersionUuid", "jwtCard"]
   }

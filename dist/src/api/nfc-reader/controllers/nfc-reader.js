@@ -13,6 +13,7 @@ const ajv = new ajv_1.default();
 const validate = ajv.compile(auth_nfcreader_json_1.default);
 exports.default = strapi_1.factories.createCoreController('api::nfc-reader.nfc-reader', ({ strapi }) => ({
     async authNfcReader(ctx) {
+        console.log(JSON.stringify(ctx.request.body));
         const valid = validate(ctx.request.body);
         if (!valid) {
             return ctx.badRequest('Validation Error', { errors: validate.errors });

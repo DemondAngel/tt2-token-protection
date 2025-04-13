@@ -13,8 +13,7 @@ export default factories.createCoreService('api::tokens-version.tokens-version',
             let entry = null;
 
             do{
-                const bigUuid = uuidv4();
-                    const uuid = createHash('sha256').update(bigUuid).digest('hex').substring(0, 16);
+                const uuid = uuidv4().replace(/-/g, "");
                 
                 const querying = await strapi.db.query('api::tokens-version.tokens-version').findOne({
                     where: {

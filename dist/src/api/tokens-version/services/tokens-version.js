@@ -5,14 +5,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const strapi_1 = require("@strapi/strapi");
 const uuid_1 = require("uuid");
-const crypto_1 = require("crypto");
 exports.default = strapi_1.factories.createCoreService('api::tokens-version.tokens-version', ({ strapi }) => ({
     async createVersion(lastVersion, pairKeyId) {
         try {
             let entry = null;
             do {
-                const bigUuid = (0, uuid_1.v4)();
-                const uuid = (0, crypto_1.createHash)('sha256').update(bigUuid).digest('hex').substring(0, 16);
+                const uuid = (0, uuid_1.v4)().replace(/-/g, "");
                 const querying = await strapi.db.query('api::tokens-version.tokens-version').findOne({
                     where: {
                         uuid: uuid

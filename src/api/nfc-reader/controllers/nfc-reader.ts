@@ -12,7 +12,7 @@ const validate = ajv.compile(authNfcReaderSchema);
 
 export default factories.createCoreController('api::nfc-reader.nfc-reader', ({strapi}) => ({
     async authNfcReader(ctx: any){
-
+        console.log(JSON.stringify(ctx.request.body));
         const valid = validate(ctx.request.body);
 
         if(!valid){
