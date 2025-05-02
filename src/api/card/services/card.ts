@@ -41,8 +41,16 @@ export default factories.createCoreService('api::card.card', ({strapi}) => ({
                                 nfc_reader: nfcReader.id
                             }
                         });
+
+                        let responseGenerateToken = await this.generateToken(nfcUuid, uuid);
+
+                        if(responseGenerateToken.status !== 200) {
+                            return responseGenerateToken;
+                        }
+
+
                         response = {
-                            'status': 200,
+                            ...responseGenerateToken,
                             'card': {
                                 'uuid': uuid
                             }
@@ -169,7 +177,7 @@ export default factories.createCoreService('api::card.card', ({strapi}) => ({
         return chunks;
     },
 
-    async validateToken(jwtCard: string, cardUuid: string, tokensVersionUuid: string){
+    async validateToken(jwtCard: string, cardUuid: string, tokensVersionUuid: string, nfcUuid: string){
 
         console.log(`There is the token ${jwtCard}`);
         console.log(`There is the uuid_card ${cardUuid}`);
@@ -208,9 +216,11 @@ export default factories.createCoreService('api::card.card', ({strapi}) => ({
                                     }
                                 });
 
-                                return {
-                                    status: 204,
-                                };
+                                console.log("Si llega a generar el token cuando se esta validando");
+
+                                let responseGenerateToken = await this.generateToken(nfcUuid, cardUuid);
+
+                                return responseGenerateToken;
                             }
 
                         }

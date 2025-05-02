@@ -82,7 +82,7 @@ exports.default = strapi_1.factories.createCoreController('api::card.card', ({ s
             let token = "";
             for (let i = 0; i < body.jwtCard.length; i++)
                 token += body.jwtCard[i];
-            const responseValidation = await strapi.service("api::card.card").validateToken(token, body.cardUuid, body.tokensVersionUuid);
+            const responseValidation = await strapi.service("api::card.card").validateToken(token, body.cardUuid, body.tokensVersionUuid, body.nfcUuid);
             return responseValidation;
         }
         catch (exception) {
