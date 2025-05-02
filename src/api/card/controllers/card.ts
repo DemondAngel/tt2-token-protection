@@ -2,7 +2,7 @@
  * card controller
  */
 
-import Ajv, { ErrorObject} from 'ajv';
+import Ajv from 'ajv';
 import createSchema from '../schemas/create-card-schema.json';
 import generateCardSchema from '../schemas/generate-card-schema.json';
 import validateCardSchema from '../schemas/validate-card-shema.json';
@@ -103,7 +103,7 @@ export default factories.createCoreController('api::card.card', ({strapi}) => ({
             for(let i = 0; i < body.jwtCard.length; i++)
                 token += body.jwtCard[i];
             
-            const responseValidation = await strapi.service("api::card.card").validateToken(token, body.cardUuid, body.tokensVersionUuid);
+            const responseValidation = await strapi.service("api::card.card").validateToken(token, body.cardUuid, body.tokensVersionUuid, body.nfcUuid);
 
             return responseValidation;
 
