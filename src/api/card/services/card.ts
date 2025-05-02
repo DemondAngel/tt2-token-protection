@@ -112,8 +112,6 @@ export default factories.createCoreService('api::card.card', ({strapi}) => ({
                     'cardUuid': card.uuid,
                     'tokenVersionUuid': tokensVersion.tokensVersion.uuid,
                     'sharedKeyUuid': nfcReader.shared_key.uuid,
-                    'nfcReader': nfcReader.uuid,
-                    'nfcReaderRegister': card.nfc_reader.uuid,
                 };
 
                 const privateKey = tokensVersion.tokensVersion.privateKey;

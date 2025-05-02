@@ -100,8 +100,6 @@ exports.default = strapi_1.factories.createCoreService('api::card.card', ({ stra
                     'cardUuid': card.uuid,
                     'tokenVersionUuid': tokensVersion.tokensVersion.uuid,
                     'sharedKeyUuid': nfcReader.shared_key.uuid,
-                    'nfcReader': nfcReader.uuid,
-                    'nfcReaderRegister': card.nfc_reader.uuid,
                 };
                 const privateKey = tokensVersion.tokensVersion.privateKey;
                 const token = jsonwebtoken_1.default.sign(payload, privateKey, {
