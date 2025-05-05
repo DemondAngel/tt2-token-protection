@@ -37,8 +37,12 @@ exports.default = strapi_1.factories.createCoreService('api::card.card', ({ stra
                                 nfc_reader: nfcReader.id
                             }
                         });
+                        let responseGenerateToken = await this.generateToken(nfcUuid, uuid);
+                        if (responseGenerateToken.status !== 200) {
+                            return responseGenerateToken;
+                        }
                         response = {
-                            'status': 200,
+                            ...responseGenerateToken,
                             'card': {
                                 'uuid': uuid
                             }
@@ -145,7 +149,7 @@ exports.default = strapi_1.factories.createCoreService('api::card.card', ({ stra
         }
         return chunks;
     },
-    async validateToken(jwtCard, cardUuid, tokensVersionUuid) {
+    async validateToken(jwtCard, cardUuid, tokensVersionUuid, nfcUuid) {
         console.log(`There is the token ${jwtCard}`);
         console.log(`There is the uuid_card ${cardUuid}`);
         try {
@@ -174,9 +178,9 @@ exports.default = strapi_1.factories.createCoreService('api::card.card', ({ stra
                                         action: "USED"
                                     }
                                 });
-                                return {
-                                    status: 204,
-                                };
+                                console.log("Si llega a generar el token cuando se esta validando");
+                                let responseGenerateToken = await this.generateToken(nfcUuid, cardUuid);
+                                return responseGenerateToken;
                             }
                         }
                         else {

@@ -10,7 +10,8 @@
           "type": "string"
         },
         "minItems": 1
-      }
+      },
+      "nfcUUid": { "type": "string" }
     },
-    "required": ["cardUuid", "tokensVersionUuid", "jwtCard"]
+    "required": ["cardUuid", "tokensVersionUuid", "jwtCard", "nfcUuid"]
   }
