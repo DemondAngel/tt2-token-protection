@@ -591,7 +591,7 @@ export interface ApiTransactionTransaction extends Struct.CollectionTypeSchema {
     draftAndPublish: false;
   };
   attributes: {
-    action: Schema.Attribute.Enumeration<['CREATED', 'USED']>;
+    action: Schema.Attribute.Enumeration<['CREATED', 'USED', 'DETECTED']>;
     card: Schema.Attribute.Relation<'manyToOne', 'api::card.card'>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &

@@ -98,6 +98,37 @@ export default factories.createCoreService('api::transaction.transaction', ({str
 
         return response;
 
+    },
+
+    async lockTokenUsage(token: string) {
+        let response = null;
+
+        try{
+            const entry = await strapi.db.query("api::transaction.transaction").findOne({
+                where: {
+                    token: token
+                },
+                select: ['id']
+            });
+
+            const updateEntry = await strapi.db.query("api::transaction.transaction").update({
+                where: {id: entry.id },
+                data:{
+                    action: "DETECTED"
+                }
+            });
+
+            return updateEntry;
+        }
+        catch(exception) {
+            console.log(exception),
+            response = {
+                status: 500,
+                message: exception
+            };
+        }
+
+        return response;
     }
 
 }));

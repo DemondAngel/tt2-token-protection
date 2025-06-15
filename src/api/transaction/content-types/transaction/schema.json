@@ -33,7 +33,8 @@
       "type": "enumeration",
       "enum": [
         "CREATED",
-        "USED"
+        "USED",
+        "DETECTED"
       ]
     }
   }

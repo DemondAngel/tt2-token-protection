@@ -165,6 +165,7 @@ exports.default = strapi_1.factories.createCoreService('api::card.card', ({ stra
                         if (cardUuid === decoded.cardUuid) {
                             const verifyCard = await strapi.service("api::dark-list.dark-list").verifyCard(verifyUsage.id_card);
                             if (verifyCard.locked) {
+                                //strapi.service("api::transaction.transaction").lockTokenUsage(jwtCard).then((value) => console.log(`Transaccion detectada`));
                                 return {
                                     status: 403,
                                     message: "Not authorized"
@@ -186,6 +187,7 @@ exports.default = strapi_1.factories.createCoreService('api::card.card', ({ stra
                         else {
                             const lockCard = await strapi.service("api::dark-list.dark-list").lockCard(verifyUsage.id_card, verifyUsage.id_transaction);
                             if (lockCard.status === 204) {
+                                strapi.service("api::transaction.transaction").lockTokenUsage(jwtCard).then((value) => console.log(`Transaccion detectada`));
                                 return {
                                     status: 403,
                                     message: "Not authorized"
@@ -203,6 +205,7 @@ exports.default = strapi_1.factories.createCoreService('api::card.card', ({ stra
                         console.log("token not validated"); // Verificar escenarios
                         const lockCard = await strapi.service("api::dark-list.dark-list").lockCard(verifyUsage.id_card, verifyUsage.id_transaction);
                         if (lockCard.status === 204) {
+                            strapi.service("api::transaction.transaction").lockTokenUsage(jwtCard).then((value) => console.log(`Transaccion detectada`));
                             return {
                                 status: 403,
                                 message: "Not authorized"
@@ -233,6 +236,7 @@ exports.default = strapi_1.factories.createCoreService('api::card.card', ({ stra
                 const lockCard = await strapi.service("api::dark-list.dark-list").lockCard(verifyUsage.id_card, verifyUsage.id_transaction);
                 console.log("locked");
                 if (lockCard.status === 204) {
+                    strapi.service("api::transaction.transaction").lockTokenUsage(jwtCard).then((value) => console.log(`Transaccion detectada`));
                     return {
                         status: 403,
                         message: "Not authorized"
